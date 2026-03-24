@@ -2,34 +2,24 @@
 
 import React, { useState } from "react";
 
-// ContactNew.tsx
-// Accepts id, heading, subheading props so the same component
-// can be dropped in 3 places on the Operators page with
-// different anchors and copy.
-
-interface ContactNewProps {
-  id?: string;
-  heading?: string;
-  subheading?: string;
-}
+// MidPageCTA.tsx
+// Second contact form instance on the Operators homepage.
+// Sits between WhyOrbitle and Testimonials — catches warm readers
+// before they scroll all the way to the footer.
 
 const inputStyle: React.CSSProperties = {
   padding: "10px 14px",
-  border: "1.5px solid #e2e8f0",
+  border: "1.5px solid rgba(255,255,255,0.15)",
   borderRadius: 10,
-  background: "#f0f4fa",
-  color: "#0d1b2e",
+  background: "rgba(255,255,255,0.07)",
+  color: "#fff",
   fontSize: 14,
   fontFamily: "inherit",
   outline: "none",
   width: "100%",
 };
 
-export default function ContactNew({
-  id = "contact",
-  heading = "Ready to launch your travel platform?",
-  subheading = "Tell us about your business and we'll get back within 24 hours with a tailored demo and plan options.",
-}: ContactNewProps) {
+export default function MidPageCTA() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -48,9 +38,8 @@ export default function ContactNew({
 
   return (
     <section
-      id={id}
       style={{
-        background: "#f0f4fa",
+        background: "linear-gradient(135deg, #0d1b2e 0%, #1e3a5f 100%)",
         padding: "88px 40px",
         fontFamily: "'Plus Jakarta Sans', sans-serif",
       }}
@@ -65,46 +54,64 @@ export default function ContactNew({
           alignItems: "start",
         }}
       >
-        {/* Left */}
+        {/* Left copy */}
         <div>
+          <span
+            style={{
+              display: "inline-block",
+              fontSize: 12,
+              fontWeight: 700,
+              letterSpacing: "0.1em",
+              textTransform: "uppercase" as const,
+              color: "#93c5fd",
+              background: "rgba(147,197,253,0.1)",
+              padding: "5px 14px",
+              borderRadius: 20,
+              marginBottom: 24,
+            }}
+          >
+            Book a demo
+          </span>
           <h2
             style={{
-              fontSize: "clamp(30px,4vw,50px)",
+              fontSize: "clamp(26px,3.5vw,42px)",
               fontWeight: 800,
-              color: "#0d1b2e",
+              color: "#fff",
               letterSpacing: "-0.03em",
               lineHeight: 1.1,
               marginBottom: 18,
             }}
           >
-            {heading}
+            See the full operator platform — live in 20 minutes.
           </h2>
           <p
             style={{
               fontSize: 16,
-              color: "#4b5e7a",
+              color: "rgba(255,255,255,0.6)",
               lineHeight: 1.75,
               marginBottom: 36,
             }}
           >
-            {subheading}
+            We'll walk you through the marketplace, agent portal, lead
+            management and your super admin panel — tailored to your business
+            size and structure.
           </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {[
               {
                 icon: "🗂️",
-                title: "Full Platform Demo",
-                sub: "Marketplace, agent portal, operator dashboard, lead CRM — everything in one walkthrough.",
+                title: "Full platform walkthrough",
+                sub: "Marketplace, agent portal, operator dashboard, lead CRM",
               },
               {
-                icon: "⚡",
-                title: "Live in 48–72 Hours",
-                sub: "From signed-up to live platform. We handle DNS, SSL, hosting, and onboarding.",
+                icon: "🎯",
+                title: "Tailored to your business",
+                sub: "We'll map your current setup to what Orbitle can replace",
               },
               {
-                icon: "🤝",
-                title: "Dedicated Setup Support",
-                sub: "We stay with you through launch — WhatsApp, email, and call support throughout.",
+                icon: "💬",
+                title: "WhatsApp follow-up",
+                sub: "We're reachable — not hidden behind a ticketing system",
               },
             ].map(({ icon, title, sub }) => (
               <div
@@ -117,8 +124,8 @@ export default function ContactNew({
                     height: 40,
                     flexShrink: 0,
                     borderRadius: 12,
-                    background: "#eff6ff",
-                    border: "1px solid #dbeafe",
+                    background: "rgba(37,99,235,0.25)",
+                    border: "1px solid rgba(37,99,235,0.4)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -132,7 +139,7 @@ export default function ContactNew({
                     style={{
                       fontSize: 14,
                       fontWeight: 700,
-                      color: "#0d1b2e",
+                      color: "#fff",
                       marginBottom: 2,
                     }}
                   >
@@ -141,7 +148,7 @@ export default function ContactNew({
                   <div
                     style={{
                       fontSize: 13,
-                      color: "#7a8fa8",
+                      color: "rgba(255,255,255,0.5)",
                       lineHeight: 1.55,
                     }}
                   >
@@ -157,12 +164,11 @@ export default function ContactNew({
         {submitted ? (
           <div
             style={{
-              background: "#fff",
-              border: "1px solid #e2e8f0",
-              borderRadius: 28,
-              padding: "40px 36px",
+              background: "rgba(255,255,255,0.05)",
+              border: "1px solid rgba(255,255,255,0.12)",
+              borderRadius: 24,
+              padding: "40px 32px",
               textAlign: "center",
-              boxShadow: "0 4px 40px rgba(37,99,235,0.07)",
             }}
           >
             <div style={{ fontSize: 48, marginBottom: 16 }}>🎉</div>
@@ -170,7 +176,7 @@ export default function ContactNew({
               style={{
                 fontSize: 22,
                 fontWeight: 800,
-                color: "#0d1b2e",
+                color: "#fff",
                 marginBottom: 10,
               }}
             >
@@ -179,44 +185,41 @@ export default function ContactNew({
             <p
               style={{
                 fontSize: 14,
-                color: "#4b5e7a",
+                color: "rgba(255,255,255,0.55)",
                 lineHeight: 1.7,
               }}
             >
-              We'll reach out within 24 hours with calendar options and a
-              platform overview.
+              We'll reach out within 24 hours to schedule your walkthrough.
             </p>
           </div>
         ) : (
           <div
             style={{
-              background: "#fff",
-              border: "1px solid #e2e8f0",
-              borderRadius: 28,
-              padding: "36px",
-              boxShadow: "0 4px 40px rgba(37,99,235,0.07)",
+              background: "rgba(255,255,255,0.05)",
+              border: "1px solid rgba(255,255,255,0.12)",
+              borderRadius: 24,
+              padding: "32px",
             }}
           >
             <h3
               style={{
-                fontSize: 22,
+                fontSize: 20,
                 fontWeight: 800,
-                color: "#0d1b2e",
-                letterSpacing: "-0.02em",
+                color: "#fff",
                 marginBottom: 6,
               }}
             >
-              Book a demo
+              Book your demo
             </h3>
             <p
               style={{
-                fontSize: 13.5,
-                color: "#7a8fa8",
+                fontSize: 13,
+                color: "rgba(255,255,255,0.45)",
                 marginBottom: 22,
                 lineHeight: 1.6,
               }}
             >
-              Fill in your details — we'll reply within 24 hours.
+              We'll get back to you within 24 hours.
             </p>
 
             <form
@@ -224,19 +227,21 @@ export default function ContactNew({
               style={{ display: "flex", flexDirection: "column", gap: 12 }}
             >
               <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: 12,
-                }}
+                style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}
               >
                 <label
                   style={{ display: "flex", flexDirection: "column", gap: 5 }}
                 >
                   <span
-                    style={{ fontSize: 12, fontWeight: 700, color: "#0d1b2e" }}
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 700,
+                      color: "rgba(255,255,255,0.5)",
+                      textTransform: "uppercase" as const,
+                      letterSpacing: "0.06em",
+                    }}
                   >
-                    Your Name
+                    Name
                   </span>
                   <input
                     name="name"
@@ -249,7 +254,13 @@ export default function ContactNew({
                   style={{ display: "flex", flexDirection: "column", gap: 5 }}
                 >
                   <span
-                    style={{ fontSize: 12, fontWeight: 700, color: "#0d1b2e" }}
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 700,
+                      color: "rgba(255,255,255,0.5)",
+                      textTransform: "uppercase" as const,
+                      letterSpacing: "0.06em",
+                    }}
                   >
                     Phone
                   </span>
@@ -262,77 +273,49 @@ export default function ContactNew({
                   />
                 </label>
               </div>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: 12,
-                }}
-              >
-                <label
-                  style={{ display: "flex", flexDirection: "column", gap: 5 }}
-                >
-                  <span
-                    style={{ fontSize: 12, fontWeight: 700, color: "#0d1b2e" }}
-                  >
-                    Email
-                  </span>
-                  <input
-                    name="email"
-                    required
-                    type="email"
-                    placeholder="rahul@horizontravel.com"
-                    style={inputStyle}
-                  />
-                </label>
-                <label
-                  style={{ display: "flex", flexDirection: "column", gap: 5 }}
-                >
-                  <span
-                    style={{ fontSize: 12, fontWeight: 700, color: "#0d1b2e" }}
-                  >
-                    Business Name
-                  </span>
-                  <input
-                    name="business"
-                    required
-                    placeholder="Horizon Travel Pvt. Ltd."
-                    style={inputStyle}
-                  />
-                </label>
-              </div>
               <label
                 style={{ display: "flex", flexDirection: "column", gap: 5 }}
               >
                 <span
-                  style={{ fontSize: 12, fontWeight: 700, color: "#0d1b2e" }}
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 700,
+                    color: "rgba(255,255,255,0.5)",
+                    textTransform: "uppercase" as const,
+                    letterSpacing: "0.06em",
+                  }}
                 >
-                  How many agents on your team?
+                  Business Name
                 </span>
-                <select name="team_size" style={inputStyle}>
-                  <option>Just me (solo operator)</option>
+                <input
+                  name="business"
+                  required
+                  placeholder="Horizon Travel Pvt. Ltd."
+                  style={inputStyle}
+                />
+              </label>
+              <label
+                style={{ display: "flex", flexDirection: "column", gap: 5 }}
+              >
+                <span
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 700,
+                    color: "rgba(255,255,255,0.5)",
+                    textTransform: "uppercase" as const,
+                    letterSpacing: "0.06em",
+                  }}
+                >
+                  How many agents do you work with?
+                </span>
+                <select name="agents" style={inputStyle}>
+                  <option>Solo / just me</option>
                   <option>2–5 agents</option>
                   <option>6–15 agents</option>
                   <option>16–50 agents</option>
                   <option>50+ agents</option>
                 </select>
               </label>
-              <label
-                style={{ display: "flex", flexDirection: "column", gap: 5 }}
-              >
-                <span
-                  style={{ fontSize: 12, fontWeight: 700, color: "#0d1b2e" }}
-                >
-                  Anything to add?
-                </span>
-                <textarea
-                  name="message"
-                  rows={3}
-                  placeholder="Tell us about your current platform setup and what you're looking to improve."
-                  style={{ ...inputStyle, resize: "vertical" }}
-                />
-              </label>
-
               <button
                 type="submit"
                 disabled={loading}
@@ -349,10 +332,6 @@ export default function ContactNew({
                   cursor: loading ? "not-allowed" : "pointer",
                   opacity: loading ? 0.7 : 1,
                   marginTop: 4,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 8,
                 }}
               >
                 {loading ? "Submitting…" : "Book My Demo →"}
@@ -360,12 +339,12 @@ export default function ContactNew({
               <p
                 style={{
                   fontSize: 12,
-                  color: "#7a8fa8",
+                  color: "rgba(255,255,255,0.3)",
                   textAlign: "center",
                   lineHeight: 1.5,
                 }}
               >
-                No commitment required. We'll share plan details within 24 hours.
+                No commitment. We'll send calendar options within 24 hours.
               </p>
             </form>
           </div>

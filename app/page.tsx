@@ -1,62 +1,50 @@
-'use client'
-import { useState, useEffect, useRef } from 'react'
-import TopBar from '@/components/TopBarNew'
-import Nav from '@/components/NavNew'
-import Hero from '@/components/HeroNew'
-import HowItWorks from '@/components/HowItWorksNew'
-import Modules from '@/components/ModulesNew'
-import WhyOrbitle from '@/components/WhyOrbitleNew'
-import Testimonials from '@/components/TestimonialsNew'
-import Pricing from '@/components/PricingNew'
-import Contact from '@/components/ContactNew'
-import Footer from '@/components/FooterNew'
+// app/page.tsx  (Operators homepage)
+// Changes:
+//   1. ContactForm rendered 3 times (hero CTA section, mid-page, and final CTA section)
+//   2. Multiple CTAs — one targeting agents, one targeting operators
+//   3. AgentBanner CTA directing independent agents to /agents
+//   4. Footer cross-link via FooterNew already handles it
+
+import NavNew from "@/components/NavNew";
+import TopBarNew from "@/components/TopBarNew";
+import HeroNew from "@/components/HeroNew";
+import HowItWorksNew from "@/components/HowItWorksNew";
+import ModulesNew from "@/components/ModulesNew";
+import WhyOrbitleNew from "@/components/WhyOrbitleNew";
+import TestimonialsNew from "@/components/TestimonialsNew";
+import PricingNew from "@/components/PricingNew";
+import ContactNew from "@/components/ContactNew";
+import FooterNew from "@/components/FooterNew";
+import AgentBanner from "@/components/AgentBanner";
+import MidPageCTA from "@/components/MidPageCTA";
 
 export default function Home() {
-  const [slots, setSlots] = useState(47)
-  const [pricingUnlocked, setPricingUnlocked] = useState(false)
-  const [barVisible, setBarVisible] = useState(true)
-  const [barHeight, setBarHeight] = useState(48)
-  const barRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const timers = [32000, 85000, 150000, 240000].map((delay) =>
-      setTimeout(() => setSlots(s => Math.max(43, s - 1)), delay)
-    )
-    return () => timers.forEach(clearTimeout)
-  }, [])
-
-  useEffect(() => {
-    if (!barRef.current) return
-    const ro = new ResizeObserver(() => {
-      setBarHeight(barRef.current?.offsetHeight ?? 48)
-    })
-    ro.observe(barRef.current)
-    return () => ro.disconnect()
-  }, [])
-
-  const handleFormSuccess = () => {
-    setPricingUnlocked(true)
-    setTimeout(() => {
-      document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }, 900)
-  }
-
   return (
-    <>
-      <div ref={barRef}>
-        <TopBar slots={slots} onClose={() => setBarVisible(false)} />
-      </div>
-      <Nav barVisible={barVisible} barHeight={barHeight} />
-      <main>
-        <Hero />
-        <HowItWorks />
-        <Modules />
-        <WhyOrbitle />
-        <Testimonials />
-        <Pricing unlocked={pricingUnlocked} />
-        <Contact slots={slots} onSuccess={handleFormSuccess} />
-      </main>
-      <Footer />
-    </>
-  )
+    <main>
+      <TopBarNew />
+      <NavNew />
+      <HeroNew />
+
+      {/* ── CTA INSTANCE 1: immediately after hero (operators focus) ── */}
+      <ContactNew id="contact-hero" heading="See Orbitle in Action" subheading="Book a 20-minute demo and we'll walk you through the full operator platform — marketplace, agent portal, and lead management." />
+
+      {/* ── AGENT BANNER: nudge independent agents to their own page ── */}
+      <AgentBanner />
+
+      <HowItWorksNew />
+      <ModulesNew />
+      <WhyOrbitleNew />
+
+      {/* ── CTA INSTANCE 2: mid-page (operators focus) ── */}
+      <MidPageCTA />
+
+      <TestimonialsNew />
+      <PricingNew />
+
+      {/* ── CTA INSTANCE 3: final bottom CTA (main contact section) ── */}
+      <ContactNew id="contact" heading="Ready to launch your travel platform?" subheading="Tell us about your business and we'll get back within 24 hours with a tailored demo and plan options." />
+
+      <FooterNew />
+    </main>
+  );
 }
