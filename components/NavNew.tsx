@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ArrowRight, MousePointer2 } from 'lucide-react'
+import { Menu, X, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useLang } from '@/lib/LangContext'
 import { cn } from '@/lib/utils'
@@ -18,7 +18,7 @@ const Logo = () => (
   </svg>
 )
 
-export default function NavNew() {
+export default function NavNew({ barVisible, barHeight }: { barVisible: boolean, barHeight: number }) {
   const { lang, setLang, t } = useLang()
   const n = t.nav
   const [scrolled, setScrolled] = useState(false)
@@ -39,14 +39,17 @@ export default function NavNew() {
 
   return (
     <>
-      <nav className={cn(
-        "fixed top-0 left-0 right-0 z-[100] transition-all duration-300 px-6",
-        scrolled ? "py-4" : "py-8"
-      )}>
+      <nav
+        style={{ top: barVisible && !scrolled ? barHeight : 0 }}
+        className={cn(
+          "fixed left-0 right-0 z-[100] transition-all duration-300 px-6",
+          scrolled ? "py-4" : "pt-3 pb-4"
+        )}
+      >
         <div className={cn(
           "max-w-container mx-auto px-6 py-4 rounded-full transition-all duration-300 flex items-center justify-between",
-          scrolled 
-            ? "bg-white/80 backdrop-blur-xl border border-slate-200/60 shadow-[0_8px_32px_rgba(0,0,0,0.08)]" 
+          scrolled
+            ? "bg-white/80 backdrop-blur-xl border border-slate-200/60 shadow-[0_8px_32px_rgba(0,0,0,0.08)]"
             : "bg-transparent"
         )}>
           {/* Logo */}
@@ -61,9 +64,9 @@ export default function NavNew() {
           {/* Desktop Nav Links */}
           <div className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a 
-                key={link.name} 
-                href={link.href} 
+              <a
+                key={link.name}
+                href={link.href}
                 className="text-sm font-bold text-slate-600 hover:text-blue transition-colors relative group"
               >
                 {link.name}
@@ -74,7 +77,7 @@ export default function NavNew() {
 
           {/* Desktop Actions */}
           <div className="hidden lg:flex items-center gap-4">
-            <button 
+            <button
               onClick={() => setLang(lang === 'en' ? 'hi' : 'en')}
               className="text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-blue transition-colors px-4 py-2"
             >
@@ -87,7 +90,7 @@ export default function NavNew() {
           </div>
 
           {/* Mobile Menu Trigger */}
-          <button 
+          <button
             className="lg:hidden p-2 text-slate-600 hover:text-blue transition-colors"
             onClick={() => setMobileMenuOpen(true)}
           >
@@ -100,17 +103,15 @@ export default function NavNew() {
       <AnimatePresence>
         {mobileMenuOpen && (
           <>
-            {/* Backdrop */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setMobileMenuOpen(false)}
               className="fixed inset-0 z-[190] bg-slate-900/40 backdrop-blur-sm lg:hidden"
             />
-            
-            {/* Drawer */}
-            <motion.div 
+
+            <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
@@ -122,7 +123,7 @@ export default function NavNew() {
                   <div className="w-8 h-8 bg-blue rounded-lg flex items-center justify-center text-white font-black text-sm italic">O</div>
                   <span className="text-xl font-black tracking-tighter text-slate-900 italic">Orbitle</span>
                 </div>
-                <button 
+                <button
                   className="p-2 text-slate-400 hover:text-blue transition-colors"
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -132,9 +133,9 @@ export default function NavNew() {
 
               <div className="flex flex-col gap-6 mb-12">
                 {navLinks.map((link) => (
-                  <a 
-                    key={link.name} 
-                    href={link.href} 
+                  <a
+                    key={link.name}
+                    href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
                     className="text-2xl font-bold text-slate-900 hover:text-blue transition-colors tracking-tight"
                   >
@@ -144,7 +145,7 @@ export default function NavNew() {
               </div>
 
               <div className="mt-auto space-y-6">
-                <button 
+                <button
                   onClick={() => {
                     setLang(lang === 'en' ? 'hi' : 'en')
                     setMobileMenuOpen(false)

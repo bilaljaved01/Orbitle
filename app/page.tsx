@@ -1,6 +1,5 @@
 'use client'
-// Orbitle — Premium SaaS Landing Page
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import TopBar from '@/components/TopBarNew'
 import Nav from '@/components/NavNew'
 import Hero from '@/components/HeroNew'
@@ -15,8 +14,10 @@ import Footer from '@/components/FooterNew'
 export default function Home() {
   const [slots, setSlots] = useState(47)
   const [pricingUnlocked, setPricingUnlocked] = useState(false)
+  const [barVisible, setBarVisible] = useState(true)
+  const [barHeight, setBarHeight] = useState(48)
+  const barRef = useRef<HTMLDivElement>(null)
 
-  // Slowly tick down slots to create organic urgency
   useEffect(() => {
     const timers = [32000, 85000, 150000, 240000].map((delay) =>
       setTimeout(() => setSlots(s => Math.max(43, s - 1)), delay)
@@ -24,9 +25,17 @@ export default function Home() {
     return () => timers.forEach(clearTimeout)
   }, [])
 
+  useEffect(() => {
+    if (!barRef.current) return
+    const ro = new ResizeObserver(() => {
+      setBarHeight(barRef.current?.offsetHeight ?? 48)
+    })
+    ro.observe(barRef.current)
+    return () => ro.disconnect()
+  }, [])
+
   const handleFormSuccess = () => {
     setPricingUnlocked(true)
-    // Scroll to pricing after a beat so user sees the reveal
     setTimeout(() => {
       document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }, 900)
@@ -34,8 +43,10 @@ export default function Home() {
 
   return (
     <>
-      <TopBar slots={slots} />
-      <Nav />
+      <div ref={barRef}>
+        <TopBar slots={slots} onClose={() => setBarVisible(false)} />
+      </div>
+      <Nav barVisible={barVisible} barHeight={barHeight} />
       <main>
         <Hero />
         <HowItWorks />
