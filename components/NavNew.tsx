@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 // ── NavNew.tsx (Operators page nav) ──
 // Added "For Agents ↗" link so operators can navigate to the agents page
@@ -26,20 +27,14 @@ export default function NavNew() {
     >
       {/* Brand */}
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: 3, width: 32 }}>
-          {[100, 70, 45].map((w, i) => (
-            <span
-              key={i}
-              style={{
-                display: "block",
-                height: 4,
-                borderRadius: 2,
-                background: "#2563eb",
-                width: `${w}%`,
-              }}
-            />
-          ))}
-        </div>
+        <Image
+          src="/images/orbitle-logo.png"
+          alt="Orbitle logo"
+          width={36}
+          height={36}
+          style={{ objectFit: "contain" }}
+          priority
+        />
         <div>
           <div
             style={{
