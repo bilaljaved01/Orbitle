@@ -5,6 +5,9 @@ import { LangProvider } from '@/lib/LangContext'
 export const metadata: Metadata = {
   title: 'Orbitle — Travel Business Platform by TrigrowTech',
   description: 'Complete white-label travel business platform. Marketplace, agent portal, admin panel and lead selling system on your own branded domain in 48 hours.',
+  icons: {
+    icon: '/images/orbitle-logo.png',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
