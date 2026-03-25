@@ -139,13 +139,34 @@ export default function ContactForm({ compact = false }: { compact?: boolean }) 
     e.preventDefault();
     setLoading(true);
     const fd = new FormData(e.currentTarget);
-    await fetch("/api/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(Object.fromEntries(fd)),
-    }).catch(() => {/* fail silently — form still marks as submitted */});
-    setLoading(false);
-    setSubmitted(true);
+    const data = Object.fromEntries(fd) as Record<string, string>;
+
+    try {
+      const response = await fetch('https://api.gopalshukla.in/api/orbitle/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          intent: 'agent-signup',
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          message: data.message || `Business: ${data.business}, Plan: ${data.plan}, Domain: ${data.domain}`,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        setSubmitted(true);
+      } else {
+        alert('Failed to send. Please try again.');
+      }
+    } catch (error) {
+      console.error('Submission Error:', error);
+      alert('Server error. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
   }
 
   if (submitted) return <SuccessMessage compact={compact} />;
