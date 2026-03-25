@@ -147,7 +147,7 @@ function DashboardMockup() {
         <div style={{ display: "grid", gridTemplateColumns: "200px 1fr", minHeight: 220 }}>
           {/* Sidebar */}
           <div style={{ background: "#fff", borderRight: "1px solid #e2e8f0", padding: "16px 0" }}>
-            {DASHBOARD_SIDEBAR_ITEMS.map(({ icon, label, active }) => (
+            {DASHBOARD_SIDEBAR_ITEMS.map(({ icon, label, active = false } : { icon: string; label: string; active?: boolean }) => (
               <div
                 key={label}
                 style={{
