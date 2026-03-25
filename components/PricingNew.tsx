@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { useLang } from '@/lib/LangContext'
 import { cn } from '@/lib/utils'
 
-export default function PricingNew({ unlocked }: { unlocked: boolean }) {
+export default function PricingNew({ unlocked = true }: { unlocked?: boolean }) {
   const { t } = useLang()
   const p = t.pricing
   const containerRef = useRef(null)
