@@ -14,11 +14,34 @@ import FooterNew from "@/components/FooterNew";
 import AgentBanner from "@/components/AgentBanner";
 import MidPageCTA from "@/components/MidPageCTA";
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Orbitle",
+  "operatingSystem": "Web-based",
+  "applicationCategory": "TravelAgencySoftware",
+  "offers": {
+    "@type": "Offer",
+    "price": "499",
+    "priceCurrency": "INR"
+  },
+  "description": "White-label travel business platform for independent agents. Launch your branded travel marketplace in 48 hours.",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "reviewCount": "150"
+  }
+};
+
 export default function Home() {
   const [pricingUnlocked, setPricingUnlocked] = useState(false);
 
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <TopBarNew />
       <NavNew />
       <HeroNew />
