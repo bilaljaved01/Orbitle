@@ -8,6 +8,7 @@ export default function TopBarNew({ slots = 7, onClose = () => {} }: { slots?: n
   const { t } = useLang()
   const [visible, setVisible] = useState(true)
   const [timer, setTimer] = useState('')
+  const slots = 7
 
   useEffect(() => {
     const tick = () => {
@@ -24,11 +25,6 @@ export default function TopBarNew({ slots = 7, onClose = () => {} }: { slots?: n
     return () => clearInterval(id)
   }, [])
 
-  const handleClose = () => {
-    setVisible(false)
-    onClose()
-  }
-
   const tb = t.topbar
 
   return (
@@ -40,36 +36,36 @@ export default function TopBarNew({ slots = 7, onClose = () => {} }: { slots?: n
           exit={{ height: 0, opacity: 0 }}
           className="bg-slate-900 text-white relative z-[110] overflow-hidden"
         >
-          <div className="max-w-container mx-auto px-6 py-3 flex items-center justify-center gap-4 lg:gap-8 flex-wrap text-[13px] font-bold">
-            <div className="flex items-center gap-2">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-center gap-3 sm:gap-6 flex-wrap text-[12px] sm:text-[13px] font-bold pr-10">
+            <div className="flex items-center gap-2 flex-wrap justify-center">
               <span className="bg-blue text-white text-[10px] uppercase tracking-[0.2em] px-2 py-0.5 rounded-sm shadow-sm ring-1 ring-white/10">
                 {tb.badge}
               </span>
-              <span className="text-slate-300 font-medium tracking-wide">
+              <span className="text-slate-300 font-medium tracking-wide text-center">
                 {tb.msg} <strong className="text-white tabular">{slots} {tb.slots}</strong> {tb.left}
               </span>
             </div>
 
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2 px-3 py-1 bg-white/5 rounded-full border border-white/10 text-blue tabular ring-1 ring-white/5">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 px-3 py-1 bg-white/5 rounded-full border border-white/10 text-blue tabular ring-1 ring-white/5 text-xs">
                 <Clock className="w-3 h-3" />
                 <span>{timer}</span>
               </div>
 
-              <a href="#contact" className="group text-blue-400 hover:text-white transition-colors flex items-center gap-1.5">
+              <a href="#contact" className="group text-blue-400 hover:text-white transition-colors flex items-center gap-1.5 text-xs sm:text-[13px]">
                 {tb.link}
                 <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
               </a>
             </div>
-
-            <button
-              onClick={handleClose}
-              className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-slate-500 hover:text-white transition-colors"
-              aria-label="Close"
-            >
-              <X className="w-4 h-4" />
-            </button>
           </div>
+
+          <button
+            onClick={() => setVisible(false)}
+            className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 p-2 text-slate-500 hover:text-white transition-colors"
+            aria-label="Close"
+          >
+            <X className="w-4 h-4" />
+          </button>
 
           <div className="absolute bottom-0 left-0 h-[1px] bg-blue/30 w-full overflow-hidden">
             <motion.div

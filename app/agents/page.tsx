@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import NavBar from "./Navbar";
 import HeroSection from "./HeroSection";
@@ -47,6 +47,7 @@ const GLOBAL_STYLES = `
   @media (max-width: 768px) {
     /* Nav */
     .hamburger           { display: flex !important; }
+    .nav-mobile-right    { display: flex !important; }
     .nav-links-desktop   { display: none !important; }
     .nav-cta-desktop     { display: none !important; }
     .nav-pad             { padding: 0 20px !important; }
@@ -80,7 +81,6 @@ const GLOBAL_STYLES = `
     .footer-brand    { grid-column: 1 / -1 !important; }
 
     /* Announcement bar */
-    .ann-bar       { font-size: 11px !important; padding: 8px 16px !important; }
     .ann-bar-timer { display: none !important; }
 
     /* Form */
@@ -91,6 +91,10 @@ const GLOBAL_STYLES = `
     .pricing-grid { grid-template-columns: 1fr !important; }
     .footer-grid  { grid-template-columns: 1fr !important; }
   }
+
+  /* Shimmer animation for announcement bar */
+  @keyframes ann-slide { from { transform: translateX(-100%); } to { transform: translateX(400%); } }
+  .ann-shimmer { animation: ann-slide 3s linear infinite; }
 `;
 
 // ─────────────────────────────────────────────
@@ -217,7 +221,13 @@ const FOOTER_COLUMNS = [
   },
   {
     heading: "Resources",
-    links: ["Get Your Website", "See Pricing", "Book a Demo", "Privacy Policy", "Terms of Service"],
+    links: [
+      { label: "Get Your Website", href: "#" },
+      { label: "See Pricing", href: "#" },
+      { label: "Book a Demo", href: "#" },
+      { label: "Privacy Policy", href: "/privacy-policy" },
+      { label: "Terms of Service", href: "/terms-of-service" },
+    ],
   },
 ] as const;
 
@@ -419,7 +429,7 @@ function WhyOrbitleSection() {
   );
 }
 
-function MidPageCTASection() {
+function MidPageCTASection({ onFormSubmit }: { onFormSubmit: () => void }) {
   const FEATURES = [
     { icon: "⚡", title: "48-hour setup",              sub: "We configure everything — DNS, SSL, hosting, theme" },
     { icon: "📋", title: "Full admin panel included",   sub: "Manage packages and leads from day one" },
@@ -454,7 +464,7 @@ function MidPageCTASection() {
           </div>
 
           {/* Reusable form — compact variant */}
-          <ContactForm compact />
+          <ContactForm compact onSubmit={onFormSubmit} />
         </div>
       </div>
     </section>
@@ -492,7 +502,7 @@ function TestimonialsSection() {
   );
 }
 
-function PricingSection() {
+function PricingSection({ unlocked }: { unlocked: boolean }) {
   return (
     <section id="pricing" className="section-pad" style={{ background: "#fff", padding: "88px 40px", textAlign: "center" }}>
       <div style={{ maxWidth: 1080, margin: "0 auto" }}>
@@ -502,43 +512,64 @@ function PricingSection() {
           No commissions. No revenue share. No per-lead charges. One flat subscription — everything maintained for you.
         </p>
 
-        <div className="pricing-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 }}>
-          {PRICING_PLANS.map(({ name, price, per, save, featured, features, cta }) => (
-            <div
-              key={name}
-              className="pcard"
-              style={{
-                background: featured ? "#0d1b2e" : "#f0f4fa",
-                border: `1.5px solid ${featured ? "#0d1b2e" : "#e2e8f0"}`,
-                borderRadius: 20, padding: "28px 24px 24px",
-                position: "relative", transition: "border-color 0.2s", textAlign: "left",
-              }}
-            >
-              {featured && (
-                <div style={{ position: "absolute", top: -13, left: "50%", transform: "translateX(-50%)", background: "#2563eb", color: "#fff", fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", padding: "4px 16px", borderRadius: 50, whiteSpace: "nowrap" }}>
-                  Most Popular
-                </div>
-              )}
-              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: featured ? "rgba(255,255,255,0.45)" : "#7a8fa8", marginBottom: 14 }}>{name}</div>
-              <div style={{ fontSize: 36, fontWeight: 800, color: featured ? "#fff" : "#0d1b2e", letterSpacing: "-0.03em", lineHeight: 1, marginBottom: 4 }}>{price}</div>
-              <div style={{ fontSize: 12, color: featured ? "rgba(255,255,255,0.4)" : "#7a8fa8", marginBottom: 14 }}>{per}</div>
-              <span style={{ display: "inline-block", fontSize: 12, fontWeight: 700, padding: "4px 12px", borderRadius: 50, marginBottom: 18, background: featured ? "rgba(255,255,255,0.1)" : "#dcfce7", color: featured ? "rgba(255,255,255,0.7)" : "#16a34a" }}>{save}</span>
-              <div style={{ height: 1, background: featured ? "rgba(255,255,255,0.1)" : "#e2e8f0", marginBottom: 18 }} />
-              <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 9, marginBottom: 22 }}>
-                {features.map((f) => (
-                  <li key={f} style={{ fontSize: 13, color: featured ? "rgba(255,255,255,0.65)" : "#4b5e7a", display: "flex", gap: 8, alignItems: "flex-start", lineHeight: 1.5 }}>
-                    <span style={{ color: featured ? "#93c5fd" : "#16a34a", fontWeight: 800, fontSize: 12, flexShrink: 0 }}>✓</span>{f}
-                  </li>
-                ))}
-              </ul>
-              <button
-                onClick={() => document.getElementById("get-started")?.scrollIntoView({ behavior: "smooth" })}
-                style={{ width: "100%", padding: 12, borderRadius: 50, fontSize: 14, fontWeight: 700, fontFamily: "inherit", cursor: "pointer", transition: "all 0.15s", background: featured ? "#2563eb" : "transparent", color: featured ? "#fff" : "#0d1b2e", border: featured ? "none" : "1.5px solid #cbd5e1" }}
-              >
-                {cta}
-              </button>
+        {/* Lock overlay */}
+        <div style={{ position: "relative" }}>
+          {!unlocked && (
+            <div style={{ position: "absolute", inset: 0, zIndex: 20, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none" }}>
+              <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.5)", backdropFilter: "blur(6px)", borderRadius: 24 }} />
+              <div style={{ position: "relative", zIndex: 1, pointerEvents: "auto", background: "#fff", border: "1px solid #e2e8f0", borderRadius: 24, padding: "40px 36px", maxWidth: 380, textAlign: "center", boxShadow: "0 32px 64px rgba(0,0,0,0.12)" }}>
+                <div style={{ width: 56, height: 56, borderRadius: 16, background: "#eff6ff", border: "1px solid #dbeafe", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, margin: "0 auto 20px" }}>🔒</div>
+                <h3 style={{ fontSize: 20, fontWeight: 800, color: "#0d1b2e", marginBottom: 10, letterSpacing: "-0.02em" }}>Pricing Unlocks After Sign-Up</h3>
+                <p style={{ fontSize: 14, color: "#4b5e7a", lineHeight: 1.7, marginBottom: 24 }}>Fill in your details in the form above or below to instantly reveal our founding-period pricing.</p>
+                <button
+                  onClick={() => document.getElementById("get-started")?.scrollIntoView({ behavior: "smooth" })}
+                  style={{ width: "100%", padding: "13px", background: "#2563eb", color: "#fff", border: "none", borderRadius: 50, fontSize: 14, fontWeight: 700, fontFamily: "inherit", cursor: "pointer" }}
+                >
+                  Show Me Pricing →
+                </button>
+                <p style={{ fontSize: 12, color: "#7a8fa8", marginTop: 12 }}>No commitment required · Free trial included</p>
+              </div>
             </div>
-          ))}
+          )}
+
+          <div className="pricing-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16, filter: unlocked ? "none" : "blur(8px) grayscale(1)", opacity: unlocked ? 1 : 0.35, pointerEvents: unlocked ? "auto" : "none", userSelect: unlocked ? "auto" : "none", transition: "all 0.5s ease" }}>
+            {PRICING_PLANS.map(({ name, price, per, save, featured, features, cta }) => (
+              <div
+                key={name}
+                className="pcard"
+                style={{
+                  background: featured ? "#0d1b2e" : "#f0f4fa",
+                  border: `1.5px solid ${featured ? "#0d1b2e" : "#e2e8f0"}`,
+                  borderRadius: 20, padding: "28px 24px 24px",
+                  position: "relative", transition: "border-color 0.2s", textAlign: "left",
+                }}
+              >
+                {featured && (
+                  <div style={{ position: "absolute", top: -13, left: "50%", transform: "translateX(-50%)", background: "#2563eb", color: "#fff", fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", padding: "4px 16px", borderRadius: 50, whiteSpace: "nowrap" }}>
+                    Most Popular
+                  </div>
+                )}
+                <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: featured ? "rgba(255,255,255,0.45)" : "#7a8fa8", marginBottom: 14 }}>{name}</div>
+                <div style={{ fontSize: 36, fontWeight: 800, color: featured ? "#fff" : "#0d1b2e", letterSpacing: "-0.03em", lineHeight: 1, marginBottom: 4 }}>{price}</div>
+                <div style={{ fontSize: 12, color: featured ? "rgba(255,255,255,0.4)" : "#7a8fa8", marginBottom: 14 }}>{per}</div>
+                <span style={{ display: "inline-block", fontSize: 12, fontWeight: 700, padding: "4px 12px", borderRadius: 50, marginBottom: 18, background: featured ? "rgba(255,255,255,0.1)" : "#dcfce7", color: featured ? "rgba(255,255,255,0.7)" : "#16a34a" }}>{save}</span>
+                <div style={{ height: 1, background: featured ? "rgba(255,255,255,0.1)" : "#e2e8f0", marginBottom: 18 }} />
+                <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 9, marginBottom: 22 }}>
+                  {features.map((f) => (
+                    <li key={f} style={{ fontSize: 13, color: featured ? "rgba(255,255,255,0.65)" : "#4b5e7a", display: "flex", gap: 8, alignItems: "flex-start", lineHeight: 1.5 }}>
+                      <span style={{ color: featured ? "#93c5fd" : "#16a34a", fontWeight: 800, fontSize: 12, flexShrink: 0 }}>✓</span>{f}
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  onClick={() => document.getElementById("get-started")?.scrollIntoView({ behavior: "smooth" })}
+                  style={{ width: "100%", padding: 12, borderRadius: 50, fontSize: 14, fontWeight: 700, fontFamily: "inherit", cursor: "pointer", transition: "all 0.15s", background: featured ? "#2563eb" : "transparent", color: featured ? "#fff" : "#0d1b2e", border: featured ? "none" : "1.5px solid #cbd5e1" }}
+                >
+                  {cta}
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div style={{ marginTop: 28, background: "#f0f4fa", border: "1px solid #e2e8f0", borderRadius: 12, padding: "20px 24px", fontSize: 13.5, color: "#7a8fa8", lineHeight: 1.7, textAlign: "center" }}>
@@ -551,7 +582,7 @@ function PricingSection() {
   );
 }
 
-function MainCTASection() {
+function MainCTASection({ onFormSubmit }: { onFormSubmit: () => void }) {
   const ITEMS = [
     { icon: "🎁", title: "Founding Discount",       sub: "Locked in permanently on submission. Not available after 100 agents." },
     { icon: "⚡", title: "1-Week Free Trial",        sub: "Explore the full platform before paying a single rupee." },
@@ -584,7 +615,7 @@ function MainCTASection() {
           </div>
 
           {/* Reusable form — full variant */}
-          <ContactForm />
+          <ContactForm onSubmit={onFormSubmit} />
         </div>
       </div>
     </section>
@@ -603,7 +634,7 @@ function Footer() {
               A travel website and admin panel for independent travel agents, by TrigrowTech. Your brand. Your domain. Your bookings.
             </p>
             <div style={{ fontSize: 13, color: "rgba(255,255,255,0.35)", lineHeight: 2 }}>
-              hello@orbitle.com<br />+91 9118556755
+              support@trigrowtech.in<br />+91 6395163348
             </div>
           </div>
 
@@ -611,9 +642,13 @@ function Footer() {
           {FOOTER_COLUMNS.map(({ heading, links, extra }: any) => (
             <div key={heading}>
               <h4 style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", marginBottom: 16 }}>{heading}</h4>
-              {links.map((l: string) => (
-                <a key={l} href="#" style={{ display: "block", fontSize: 13.5, color: "rgba(255,255,255,0.45)", textDecoration: "none", marginBottom: 11, transition: "color 0.15s" }}>{l}</a>
-              ))}
+              {links.map((l: any) => {
+                const label = typeof l === "string" ? l : l.label;
+                const href = typeof l === "string" ? "#" : l.href;
+                return (
+                  <Link key={label} href={href} style={{ display: "block", fontSize: 13.5, color: "rgba(255,255,255,0.45)", textDecoration: "none", marginBottom: 11, transition: "color 0.15s" }}>{label}</Link>
+                );
+              })}
               {extra && (
                 <Link href={extra.href} style={{ display: "inline-block", fontSize: 13, fontWeight: 700, color: "#93c5fd", textDecoration: "none", marginTop: 6, padding: "5px 14px", borderRadius: 20, border: "1px solid rgba(147,197,253,0.2)", background: "rgba(147,197,253,0.05)" }}>
                   {extra.label}
@@ -625,11 +660,10 @@ function Footer() {
 
         {/* Bottom bar */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 12.5, flexWrap: "wrap", gap: 12 }}>
-          <span style={{ color: "rgba(255,255,255,0.3)" }}>© 2026 TrigrowTech Pvt. Ltd. All rights reserved.</span>
+          <span style={{ color: "rgba(255,255,255,0.3)" }}>© 2026 TrigrowTech. All rights reserved.</span>
           <div style={{ display: "flex", gap: 20 }}>
-            {["Privacy Policy", "Terms of Service"].map((l) => (
-              <a key={l} href="#" style={{ color: "rgba(255,255,255,0.3)", textDecoration: "none" }}>{l}</a>
-            ))}
+            <Link href="/privacy-policy" style={{ color: "rgba(255,255,255,0.3)", textDecoration: "none" }}>Privacy Policy</Link>
+            <Link href="/terms-of-service" style={{ color: "rgba(255,255,255,0.3)", textDecoration: "none" }}>Terms of Service</Link>
           </div>
         </div>
       </div>
@@ -641,6 +675,9 @@ function Footer() {
 // PAGE ROOT
 // ─────────────────────────────────────────────
 export default function AgentsPage() {
+  const [pricingUnlocked, setPricingUnlocked] = useState(false);
+  const unlockPricing = () => setPricingUnlocked(true);
+
   return (
     <div
       style={{
@@ -660,10 +697,10 @@ export default function AgentsPage() {
       <ValueBannerSection />
       <WhatChangesSection />
       <WhyOrbitleSection />
-      <MidPageCTASection />
+      <MidPageCTASection onFormSubmit={unlockPricing} />
       <TestimonialsSection />
-      <PricingSection />
-      <MainCTASection />
+      <PricingSection unlocked={pricingUnlocked} />
+      <MainCTASection onFormSubmit={unlockPricing} />
       <Footer />
     </div>
   );

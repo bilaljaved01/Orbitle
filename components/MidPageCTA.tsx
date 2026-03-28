@@ -40,19 +40,13 @@ export default function MidPageCTA() {
     <section
       style={{
         background: "linear-gradient(135deg, #0d1b2e 0%, #1e3a5f 100%)",
-        padding: "88px 40px",
         fontFamily: "'Plus Jakarta Sans', sans-serif",
       }}
+      className="px-6 sm:px-10 py-16 sm:py-20 lg:py-24"
     >
       <div
-        style={{
-          maxWidth: 1080,
-          margin: "0 auto",
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: 64,
-          alignItems: "start",
-        }}
+        style={{ maxWidth: 1080, margin: "0 auto" }}
+        className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start"
       >
         {/* Left copy */}
         <div>

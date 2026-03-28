@@ -15,19 +15,13 @@ export default function AgentBanner() {
         background: "#f0f4fa",
         borderTop: "1px solid #e2e8f0",
         borderBottom: "1px solid #e2e8f0",
-        padding: "48px 40px",
         fontFamily: "'Plus Jakarta Sans', sans-serif",
       }}
+      className="px-6 sm:px-10 py-10 sm:py-12"
     >
       <div
-        style={{
-          maxWidth: 1080,
-          margin: "0 auto",
-          display: "grid",
-          gridTemplateColumns: "1fr auto",
-          gap: 40,
-          alignItems: "center",
-        }}
+        style={{ maxWidth: 1080, margin: "0 auto" }}
+        className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 lg:gap-10 items-center"
       >
         <div>
           <div
@@ -60,16 +54,15 @@ export default function AgentBanner() {
           </div>
           <h2
             style={{
-              fontSize: "clamp(22px, 2.8vw, 34px)",
+              fontSize: "clamp(20px, 2.8vw, 34px)",
               fontWeight: 800,
               color: "#0d1b2e",
               letterSpacing: "-0.03em",
-              lineHeight: 1.15,
+              lineHeight: 1.2,
               marginBottom: 10,
             }}
           >
-            Orbitle for Operators is for travel companies with agents.
-            <br />
+            Orbitle for Operators is for travel companies with agents.{" "}
             <span style={{ color: "#2563eb" }}>
               Working solo? We built a product just for you.
             </span>
@@ -88,15 +81,7 @@ export default function AgentBanner() {
           </p>
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 12,
-            alignItems: "flex-end",
-            flexShrink: 0,
-          }}
-        >
+        <div className="flex flex-col gap-3 items-start lg:items-end">
           <Link
             href="/agents"
             style={{

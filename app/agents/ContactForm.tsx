@@ -131,7 +131,7 @@ function SuccessMessage({ compact }: { compact: boolean }) {
 // ─────────────────────────────────────────────
 // MAIN EXPORT
 // ─────────────────────────────────────────────
-export default function ContactForm({ compact = false }: { compact?: boolean }) {
+export default function ContactForm({ compact = false, onSubmit }: { compact?: boolean; onSubmit?: () => void }) {
   const [submitted, setSubmitted] = useState(false);
   const [loading,   setLoading]   = useState(false);
 

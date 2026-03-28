@@ -48,23 +48,23 @@ function HamburgerButton({ onClick }: { onClick: () => void }) {
       style={{
         background: "none",
         border: "1.5px solid #e2e8f0",
-        borderRadius: 8,
-        width: 40,
-        height: 40,
+        borderRadius: 7,
+        width: 32,
+        height: 32,
         cursor: "pointer",
         padding: 0,
         display: "none",           // shown via CSS media query
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        gap: 5,
+        gap: 4,
         flexShrink: 0,
       }}
     >
       {[0, 1, 2].map((i) => (
         <span
           key={i}
-          style={{ display: "block", width: 20, height: 2, background: "#0d1b2e", borderRadius: 2 }}
+          style={{ display: "block", width: 14, height: 1.5, background: "#0d1b2e", borderRadius: 2 }}
         />
       ))}
     </button>
@@ -285,95 +285,120 @@ function AnnouncementBar({
       style={{
         background: "#0d1b2e",
         color: "#fff",
-        padding: "10px 24px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        fontSize: 13,
-        gap: 16,
+        position: "relative",
+        overflow: "hidden",
       }}
     >
-      {/* spacer keeps content centred */}
-      <div style={{ width: 60 }} />
-
+      {/* Content row — wraps on mobile */}
       <div
         style={{
+          maxWidth: 1280,
+          margin: "0 auto",
+          padding: "10px 48px 10px 16px", // right padding leaves room for × button
           display: "flex",
           alignItems: "center",
-          gap: 12,
-          flex: 1,
           justifyContent: "center",
+          gap: 10,
           flexWrap: "wrap",
+          fontSize: 12,
+          fontWeight: 600,
         }}
       >
+        {/* Badge */}
         <span
           style={{
             background: "#2563eb",
             color: "#fff",
-            fontSize: 11,
+            fontSize: 10,
             fontWeight: 700,
             letterSpacing: "0.08em",
             textTransform: "uppercase",
-            padding: "4px 10px",
-            borderRadius: 6,
+            padding: "3px 8px",
+            borderRadius: 4,
             whiteSpace: "nowrap",
+            flexShrink: 0,
           }}
         >
           Early Access
         </span>
 
-        <span style={{ color: "rgba(255,255,255,0.85)" }}>
+        {/* Message */}
+        <span style={{ color: "rgba(255,255,255,0.85)", textAlign: "center" }}>
           First 100 agents get lifetime pricing —{" "}
           <strong style={{ color: "#fff" }}>78 spots left</strong>
         </span>
 
+        {/* Timer - hidden on very small screens via CSS class */}
         <div
           className="ann-bar-timer"
           style={{
             display: "flex",
             alignItems: "center",
-            gap: 6,
+            gap: 5,
             background: "rgba(255,255,255,0.1)",
             border: "1px solid rgba(255,255,255,0.15)",
-            padding: "5px 12px",
-            borderRadius: 8,
+            padding: "3px 10px",
+            borderRadius: 6,
             fontWeight: 600,
-            fontSize: 13,
+            fontSize: 12,
             fontFamily: "monospace",
             color: "#fff",
             whiteSpace: "nowrap",
+            flexShrink: 0,
           }}
         >
           🕐 {countdown}
         </div>
 
+        {/* CTA link */}
         <a
           href="#get-started"
-          style={{ color: "#fff", fontWeight: 700, fontSize: 13, textDecoration: "none", whiteSpace: "nowrap" }}
+          style={{
+            color: "#93c5fd",
+            fontWeight: 700,
+            fontSize: 12,
+            textDecoration: "none",
+            whiteSpace: "nowrap",
+            flexShrink: 0,
+          }}
         >
           Reserve your spot →
         </a>
       </div>
 
+      {/* Dismiss — absolute so it doesn't affect flex layout */}
       <button
         onClick={onDismiss}
         aria-label="Dismiss announcement"
         style={{
+          position: "absolute",
+          right: 10,
+          top: "50%",
+          transform: "translateY(-50%)",
           background: "none",
           border: "none",
-          color: "rgba(255,255,255,0.4)",
+          color: "rgba(255,255,255,0.45)",
           cursor: "pointer",
           fontSize: 18,
           lineHeight: 1,
-          padding: "0 4px",
+          padding: "4px 6px",
           flexShrink: 0,
         }}
       >
         ×
       </button>
+
+      {/* Animated shimmer line at bottom */}
+      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 1, background: "rgba(37,99,235,0.3)", overflow: "hidden" }}>
+        <div
+          className="ann-shimmer"
+          style={{ height: "100%", width: "33%", background: "linear-gradient(90deg, transparent, #2563eb, transparent)" }}
+        />
+      </div>
     </div>
   );
 }
+
 
 // ─────────────────────────────────────────────
 // MAIN EXPORT
@@ -381,7 +406,15 @@ function AnnouncementBar({
 export default function NavBar() {
   const [annVisible,   setAnnVisible]   = useState(true);
   const [sidebarOpen, setSidebarOpen]   = useState(false);
+  const [scrolled,    setScrolled]      = useState(false);
   const countdown = useCountdown(23 * 3600 + 54 * 60 + 51);
+
+  // Scroll detection for floating pill effect
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   // Close sidebar on Escape key
   useEffect(() => {
@@ -400,6 +433,17 @@ export default function NavBar() {
 
   return (
     <>
+      {/* Desktop size restoration */}
+      <style>{`
+        @media (min-width: 1024px) {
+          .nav-root-agt   { height: 68px !important; padding: 0 40px !important; gap: 24px !important; }
+          .nav-brand-agt  { gap: 12px !important; }
+          .nav-logo-agt   { width: 36px !important; height: 36px !important; }
+          .nav-name-agt   { font-size: 20px !important; }
+          .nav-badge-agt  { font-size: 11.5px !important; padding: 4px 12px !important; }
+        }
+      `}</style>
+
       {/* Sidebar backdrop + panel */}
       {sidebarOpen && <SidebarBackdrop onClick={() => setSidebarOpen(false)} />}
       <Sidebar
@@ -418,49 +462,63 @@ export default function NavBar() {
 
       {/* Sticky nav */}
       <nav
-        className="nav-pad"
+        className="nav-pad nav-root-agt"
         style={{
-          background: "#fff",
-          borderBottom: "1px solid #e2e8f0",
           position: "sticky",
-          top: 0,
+          top: scrolled ? 12 : 0,
           zIndex: 100,
-          padding: "0 40px",
-          height: 68,
+          padding: "0 16px",
+          height: 60,
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          gap: 24,
+          gap: 8,
+          overflow: "hidden",
+          // Floating pill
+          margin: scrolled ? "0 12px" : "0",
+          borderRadius: scrolled ? 999 : 0,
+          background: scrolled ? "rgba(255,255,255,0.92)" : "#fff",
+          backdropFilter: scrolled ? "blur(20px) saturate(200%)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(20px) saturate(200%)" : "none",
+          border: scrolled ? "1px solid rgba(0,0,0,0.08)" : "none",
+          borderBottom: scrolled ? "none" : "1px solid #e2e8f0",
+          boxShadow: scrolled ? "0 8px 32px rgba(13,27,46,0.12)" : "none",
+          transition: "all 0.35s cubic-bezier(0.4,0,0.2,1)",
         }}
       >
-        {/* Brand */}
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <Image
-            src="/images/orbitle-logo.png"
-            alt="Orbitle logo"
-            width={36}
-            height={36}
-            style={{ objectFit: "contain" }}
-            priority
-          />
-          <div>
-            <div style={{ fontSize: 20, fontWeight: 800, color: "#0d1b2e", fontStyle: "italic", letterSpacing: "-0.02em" }}>
+        {/* Brand — flex:1 + minWidth:0 lets it shrink on mobile */}
+        <div className="nav-brand-agt" style={{ display: "flex", alignItems: "center", gap: 8, flex: 1, minWidth: 0 }}>
+          <div className="nav-logo-agt" style={{ width: 28, height: 28, flexShrink: 0 }}>
+            <Image
+              src="/images/orbitle-logo.png"
+              alt="Orbitle logo"
+              width={28}
+              height={28}
+              style={{ objectFit: "contain", width: "100%", height: "100%" }}
+              priority
+            />
+          </div>
+          <div style={{ minWidth: 0 }}>
+            <div className="nav-name-agt" style={{ fontSize: 17, fontWeight: 800, color: "#0d1b2e", fontStyle: "italic", letterSpacing: "-0.02em", whiteSpace: "nowrap" }}>
               Orbitle
             </div>
-            <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#7a8fa8" }}>
+            <div className="hidden sm:block" style={{ fontSize: 8, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#7a8fa8" }}>
               by TrigrowTech
             </div>
           </div>
           <span
+            className="nav-badge-agt"
             style={{
               background: "#eff6ff",
               color: "#2563eb",
               border: "1px solid #dbeafe",
-              fontSize: 11.5,
+              fontSize: 9,
               fontWeight: 700,
-              padding: "4px 12px",
+              padding: "2px 7px",
               borderRadius: 20,
               letterSpacing: "0.02em",
+              whiteSpace: "nowrap",
+              flexShrink: 0,
             }}
           >
             For Agents
@@ -517,8 +575,25 @@ export default function NavBar() {
           </a>
         </div>
 
-        {/* Mobile hamburger */}
-        <HamburgerButton onClick={() => setSidebarOpen(true)} />
+        {/* Mobile: "Try for Free" + Hamburger — flexShrink:0 so it never gets squeezed */}
+        <div className="nav-mobile-right" style={{ display: "none", alignItems: "center", gap: 6, flexShrink: 0 }}>
+          <a
+            href="#get-started"
+            style={{
+              background: "#2563eb",
+              color: "#fff",
+              fontSize: 11,
+              fontWeight: 700,
+              padding: "6px 11px",
+              borderRadius: 50,
+              textDecoration: "none",
+              whiteSpace: "nowrap",
+            }}
+          >
+            Try for Free
+          </a>
+          <HamburgerButton onClick={() => setSidebarOpen(true)} />
+        </div>
       </nav>
     </>
   );
