@@ -48,23 +48,23 @@ function HamburgerButton({ onClick }: { onClick: () => void }) {
       style={{
         background: "none",
         border: "1.5px solid #e2e8f0",
-        borderRadius: 8,
-        width: 40,
-        height: 40,
+        borderRadius: 7,
+        width: 32,
+        height: 32,
         cursor: "pointer",
         padding: 0,
         display: "none",           // shown via CSS media query
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        gap: 5,
+        gap: 4,
         flexShrink: 0,
       }}
     >
       {[0, 1, 2].map((i) => (
         <span
           key={i}
-          style={{ display: "block", width: 20, height: 2, background: "#0d1b2e", borderRadius: 2 }}
+          style={{ display: "block", width: 14, height: 1.5, background: "#0d1b2e", borderRadius: 2 }}
         />
       ))}
     </button>
@@ -381,7 +381,15 @@ function AnnouncementBar({
 export default function NavBar() {
   const [annVisible,   setAnnVisible]   = useState(true);
   const [sidebarOpen, setSidebarOpen]   = useState(false);
+  const [scrolled,    setScrolled]      = useState(false);
   const countdown = useCountdown(23 * 3600 + 54 * 60 + 51);
+
+  // Scroll detection for floating pill effect
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   // Close sidebar on Escape key
   useEffect(() => {
@@ -400,6 +408,17 @@ export default function NavBar() {
 
   return (
     <>
+      {/* Desktop size restoration */}
+      <style>{`
+        @media (min-width: 1024px) {
+          .nav-root-agt   { height: 68px !important; padding: 0 40px !important; gap: 24px !important; }
+          .nav-brand-agt  { gap: 12px !important; }
+          .nav-logo-agt   { width: 36px !important; height: 36px !important; }
+          .nav-name-agt   { font-size: 20px !important; }
+          .nav-badge-agt  { font-size: 11.5px !important; padding: 4px 12px !important; }
+        }
+      `}</style>
+
       {/* Sidebar backdrop + panel */}
       {sidebarOpen && <SidebarBackdrop onClick={() => setSidebarOpen(false)} />}
       <Sidebar
@@ -418,49 +437,63 @@ export default function NavBar() {
 
       {/* Sticky nav */}
       <nav
-        className="nav-pad"
+        className="nav-pad nav-root-agt"
         style={{
-          background: "#fff",
-          borderBottom: "1px solid #e2e8f0",
           position: "sticky",
-          top: 0,
+          top: scrolled ? 12 : 0,
           zIndex: 100,
-          padding: "0 40px",
-          height: 68,
+          padding: "0 16px",
+          height: 60,
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          gap: 24,
+          gap: 8,
+          overflow: "hidden",
+          // Floating pill
+          margin: scrolled ? "0 12px" : "0",
+          borderRadius: scrolled ? 999 : 0,
+          background: scrolled ? "rgba(255,255,255,0.92)" : "#fff",
+          backdropFilter: scrolled ? "blur(20px) saturate(200%)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(20px) saturate(200%)" : "none",
+          border: scrolled ? "1px solid rgba(0,0,0,0.08)" : "none",
+          borderBottom: scrolled ? "none" : "1px solid #e2e8f0",
+          boxShadow: scrolled ? "0 8px 32px rgba(13,27,46,0.12)" : "none",
+          transition: "all 0.35s cubic-bezier(0.4,0,0.2,1)",
         }}
       >
-        {/* Brand */}
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <Image
-            src="/images/orbitle-logo.png"
-            alt="Orbitle logo"
-            width={36}
-            height={36}
-            style={{ objectFit: "contain" }}
-            priority
-          />
-          <div>
-            <div style={{ fontSize: 20, fontWeight: 800, color: "#0d1b2e", fontStyle: "italic", letterSpacing: "-0.02em" }}>
+        {/* Brand — flex:1 + minWidth:0 lets it shrink on mobile */}
+        <div className="nav-brand-agt" style={{ display: "flex", alignItems: "center", gap: 8, flex: 1, minWidth: 0 }}>
+          <div className="nav-logo-agt" style={{ width: 28, height: 28, flexShrink: 0 }}>
+            <Image
+              src="/images/orbitle-logo.png"
+              alt="Orbitle logo"
+              width={28}
+              height={28}
+              style={{ objectFit: "contain", width: "100%", height: "100%" }}
+              priority
+            />
+          </div>
+          <div style={{ minWidth: 0 }}>
+            <div className="nav-name-agt" style={{ fontSize: 17, fontWeight: 800, color: "#0d1b2e", fontStyle: "italic", letterSpacing: "-0.02em", whiteSpace: "nowrap" }}>
               Orbitle
             </div>
-            <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#7a8fa8" }}>
+            <div className="hidden sm:block" style={{ fontSize: 8, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#7a8fa8" }}>
               by TrigrowTech
             </div>
           </div>
           <span
+            className="nav-badge-agt"
             style={{
               background: "#eff6ff",
               color: "#2563eb",
               border: "1px solid #dbeafe",
-              fontSize: 11.5,
+              fontSize: 9,
               fontWeight: 700,
-              padding: "4px 12px",
+              padding: "2px 7px",
               borderRadius: 20,
               letterSpacing: "0.02em",
+              whiteSpace: "nowrap",
+              flexShrink: 0,
             }}
           >
             For Agents
@@ -517,8 +550,25 @@ export default function NavBar() {
           </a>
         </div>
 
-        {/* Mobile hamburger */}
-        <HamburgerButton onClick={() => setSidebarOpen(true)} />
+        {/* Mobile: "Try for Free" + Hamburger — flexShrink:0 so it never gets squeezed */}
+        <div className="nav-mobile-right" style={{ display: "none", alignItems: "center", gap: 6, flexShrink: 0 }}>
+          <a
+            href="#get-started"
+            style={{
+              background: "#2563eb",
+              color: "#fff",
+              fontSize: 11,
+              fontWeight: 700,
+              padding: "6px 11px",
+              borderRadius: 50,
+              textDecoration: "none",
+              whiteSpace: "nowrap",
+            }}
+          >
+            Try for Free
+          </a>
+          <HamburgerButton onClick={() => setSidebarOpen(true)} />
+        </div>
       </nav>
     </>
   );

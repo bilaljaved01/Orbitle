@@ -32,23 +32,23 @@ function HamburgerButton({ onClick }: { onClick: () => void }) {
       style={{
         background: "none",
         border: "1px solid #e2e8f0",
-        borderRadius: 8,
-        width: 38,
-        height: 38,
+        borderRadius: 7,
+        width: 32,
+        height: 32,
         cursor: "pointer",
         padding: 0,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        gap: 5,
+        gap: 4,
         flexShrink: 0,
       }}
     >
       {[0, 1, 2].map((i) => (
         <span
           key={i}
-          style={{ display: "block", width: 18, height: 2, background: "#0d1b2e", borderRadius: 2 }}
+          style={{ display: "block", width: 14, height: 1.5, background: "#0d1b2e", borderRadius: 2 }}
         />
       ))}
     </button>
@@ -246,6 +246,14 @@ function Sidebar({
 // ─────────────────────────────────────────────
 export default function NavNew() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Scroll detection for floating pill effect
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   // Close sidebar on Escape key
   useEffect(() => {
@@ -264,6 +272,17 @@ export default function NavNew() {
 
   return (
     <>
+      {/* Desktop size restoration via CSS — mobile stays compact, desktop gets full sizes */}
+      <style>{`
+        @media (min-width: 1024px) {
+          .nav-root-ops   { height: 64px !important; padding: 0 24px !important; gap: 16px !important; }
+          .nav-brand-ops  { gap: 10px !important; }
+          .nav-logo-ops   { width: 32px !important; height: 32px !important; }
+          .nav-name-ops   { font-size: 18px !important; }
+          .nav-badge-ops  { font-size: 11px !important; padding: 3px 10px !important; }
+        }
+      `}</style>
+
       {/* Sidebar backdrop + panel */}
       {sidebarOpen && <SidebarBackdrop onClick={() => setSidebarOpen(false)} />}
       <Sidebar
@@ -273,47 +292,62 @@ export default function NavNew() {
 
       {/* Sticky nav */}
       <nav
+        className="nav-root-ops"
         style={{
-          background: "#fff",
-          borderBottom: "1px solid #e2e8f0",
           position: "sticky",
-          top: 0,
+          top: scrolled ? 12 : 0,
           zIndex: 100,
-          padding: "0 20px",
-          height: 64,
+          padding: scrolled ? "0 16px" : "0 16px",
+          height: 60,
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          gap: 16,
+          gap: 8,
           fontFamily: "'Plus Jakarta Sans', sans-serif",
+          overflow: "hidden",
+          // Floating pill styles
+          margin: scrolled ? "0 12px" : "0",
+          borderRadius: scrolled ? 999 : 0,
+          background: scrolled ? "rgba(255,255,255,0.92)" : "#fff",
+          backdropFilter: scrolled ? "blur(20px) saturate(200%)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(20px) saturate(200%)" : "none",
+          border: scrolled ? "1px solid rgba(0,0,0,0.08)" : "none",
+          borderBottom: scrolled ? "none" : "1px solid #e2e8f0",
+          boxShadow: scrolled ? "0 8px 32px rgba(13,27,46,0.12)" : "none",
+          transition: "all 0.35s cubic-bezier(0.4,0,0.2,1)",
         }}
       >
-        {/* Brand */}
-        <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
-          <Image
-            src="/images/orbitle-logo.png"
-            alt="Orbitle logo"
-            width={32}
-            height={32}
-            style={{ objectFit: "contain" }}
-            priority
-          />
-          <div>
+        {/* Brand — flex:1 so it shrinks on mobile, minWidth:0 prevents overflow */}
+        <div className="nav-brand-ops" style={{ display: "flex", alignItems: "center", gap: 8, flex: 1, minWidth: 0 }}>
+          <div className="nav-logo-ops" style={{ width: 28, height: 28, flexShrink: 0 }}>
+            <Image
+              src="/images/orbitle-logo.png"
+              alt="Orbitle logo"
+              width={28}
+              height={28}
+              style={{ objectFit: "contain", width: "100%", height: "100%" }}
+              priority
+            />
+          </div>
+          <div style={{ minWidth: 0 }}>
             <div
+              className="nav-name-ops"
               style={{
-                fontSize: 18,
+                fontSize: 17,
                 fontWeight: 800,
                 color: "#0d1b2e",
                 fontStyle: "italic",
                 letterSpacing: "-0.02em",
                 lineHeight: 1.1,
+                whiteSpace: "nowrap",
               }}
             >
               Orbitle
             </div>
             <div
+              className="hidden sm:block"
               style={{
-                fontSize: 9,
+                fontSize: 8,
                 fontWeight: 600,
                 letterSpacing: "0.1em",
                 textTransform: "uppercase",
@@ -324,17 +358,18 @@ export default function NavNew() {
             </div>
           </div>
           <span
-            className="hidden sm:inline"
+            className="nav-badge-ops"
             style={{
               background: "#eff6ff",
               color: "#2563eb",
               border: "1px solid #dbeafe",
-              fontSize: 11,
+              fontSize: 9,
               fontWeight: 700,
-              padding: "3px 10px",
+              padding: "2px 7px",
               borderRadius: 20,
               letterSpacing: "0.02em",
               flexShrink: 0,
+              whiteSpace: "nowrap",
             }}
           >
             For Operators
@@ -350,7 +385,6 @@ export default function NavNew() {
             <a
               key={label}
               href={href}
-              className="hover:text-blue-600 transition-colors"
               style={{
                 fontSize: 14,
                 fontWeight: 500,
@@ -364,7 +398,6 @@ export default function NavNew() {
           ))}
           <Link
             href="/agents"
-            className="hover:bg-slate-50 transition-colors"
             style={{
               fontSize: 13,
               fontWeight: 600,
@@ -400,22 +433,22 @@ export default function NavNew() {
           </a>
         </div>
 
-        {/* Mobile: CTA + Hamburger */}
-        <div className="flex lg:hidden" style={{ alignItems: "center", gap: 10 }}>
+        {/* Mobile: "Try for Free" + Hamburger */}
+        <div className="flex lg:hidden" style={{ alignItems: "center", gap: 6, flexShrink: 0 }}>
           <a
             href="#contact"
             style={{
               background: "#2563eb",
               color: "#fff",
-              fontSize: 13,
+              fontSize: 11,
               fontWeight: 700,
-              padding: "8px 16px",
+              padding: "6px 11px",
               borderRadius: 50,
               textDecoration: "none",
               whiteSpace: "nowrap",
             }}
           >
-            Book Demo
+            Try for Free
           </a>
           <HamburgerButton onClick={() => setSidebarOpen(true)} />
         </div>

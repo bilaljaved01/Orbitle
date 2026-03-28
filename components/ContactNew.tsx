@@ -6,6 +6,7 @@ interface ContactNewProps {
   id?: string;
   heading?: string;
   subheading?: string;
+  onFormSubmit?: () => void;
 }
 
 const inputStyle: React.CSSProperties = {
@@ -25,6 +26,7 @@ export default function ContactNew({
   id = "contact",
   heading = "Ready to launch your travel platform?",
   subheading = "Tell us about your business and we'll get back within 24 hours with a tailored demo and plan options.",
+  onFormSubmit,
 }: ContactNewProps) {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -40,6 +42,7 @@ export default function ContactNew({
     }).catch(() => {});
     setLoading(false);
     setSubmitted(true);
+    onFormSubmit?.();
   }
 
   return (

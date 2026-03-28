@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import NavNew from "@/components/NavNew";
 import TopBarNew from "@/components/TopBarNew";
 import HeroNew from "@/components/HeroNew";
@@ -12,6 +15,8 @@ import AgentBanner from "@/components/AgentBanner";
 import MidPageCTA from "@/components/MidPageCTA";
 
 export default function Home() {
+  const [pricingUnlocked, setPricingUnlocked] = useState(false);
+
   return (
     <main>
       <TopBarNew />
@@ -22,6 +27,7 @@ export default function Home() {
         id="contact-hero"
         heading="See Orbitle in Action"
         subheading="Book a 20-minute demo and we'll walk you through the full operator platform — marketplace, agent portal, and lead management."
+        onFormSubmit={() => setPricingUnlocked(true)}
       />
 
       <AgentBanner />
@@ -33,12 +39,13 @@ export default function Home() {
       <MidPageCTA />
 
       <TestimonialsNew />
-      <PricingNew unlocked={false} />
+      <PricingNew unlocked={pricingUnlocked} />
 
       <ContactNew
         id="contact"
         heading="Ready to launch your travel platform?"
         subheading="Tell us about your business and we'll get back within 24 hours with a tailored demo and plan options."
+        onFormSubmit={() => setPricingUnlocked(true)}
       />
 
       <FooterNew />

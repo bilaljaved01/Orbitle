@@ -105,9 +105,11 @@ export default function FooterNew() {
               agents, and the teams running them.
             </p>
             <div style={{ fontSize: 13, color: "rgba(255,255,255,0.35)", lineHeight: 2 }}>
-              hello@orbitle.com
+              support@trigrowtech.in
               <br />
-              +91 9118556755
+              +91 6395163348
+               <br />
+               +91 96961 97706
             </div>
           </div>
 
@@ -204,10 +206,15 @@ export default function FooterNew() {
             >
               Resources
             </h4>
-            {["Book a Demo", "See Pricing", "Privacy Policy", "Terms of Service"].map((l) => (
-              <a
-                key={l}
-                href="#"
+            {[
+              { label: "Book a Demo", href: "#" },
+              { label: "See Pricing", href: "#" },
+              { label: "Privacy Policy", href: "/privacy-policy" },
+              { label: "Terms of Service", href: "/terms-of-service" },
+            ].map(({ label, href }) => (
+              <Link
+                key={label}
+                href={href}
                 style={{
                   display: "block",
                   fontSize: 13,
@@ -216,8 +223,8 @@ export default function FooterNew() {
                   marginBottom: 10,
                 }}
               >
-                {l}
-              </a>
+                {label}
+              </Link>
             ))}
           </div>
         </div>
@@ -228,18 +235,11 @@ export default function FooterNew() {
           className="flex flex-col sm:flex-row justify-between items-center gap-3"
         >
           <span style={{ color: "rgba(255,255,255,0.3)" }}>
-            © 2026 TrigrowTech Pvt. Ltd. All rights reserved.
+            © 2026 TrigrowTech. All rights reserved.
           </span>
           <div style={{ display: "flex", gap: 20 }}>
-            {["Privacy Policy", "Terms of Service"].map((l) => (
-              <a
-                key={l}
-                href="#"
-                style={{ color: "rgba(255,255,255,0.3)", textDecoration: "none" }}
-              >
-                {l}
-              </a>
-            ))}
+            <Link href="/privacy-policy" style={{ color: "rgba(255,255,255,0.3)", textDecoration: "none" }}>Privacy Policy</Link>
+            <Link href="/terms-of-service" style={{ color: "rgba(255,255,255,0.3)", textDecoration: "none" }}>Terms of Service</Link>
           </div>
         </div>
       </div>
