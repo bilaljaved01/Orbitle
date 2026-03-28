@@ -8,7 +8,7 @@ export default function TopBarNew() {
   const { t } = useLang()
   const [visible, setVisible] = useState(true)
   const [timer, setTimer] = useState('')
-  const slots = 7
+  const slotsLeft = 7
 
   useEffect(() => {
     const tick = () => {
@@ -42,7 +42,7 @@ export default function TopBarNew() {
                 {tb.badge}
               </span>
               <span className="text-slate-300 font-medium tracking-wide text-center">
-                {tb.msg} <strong className="text-white tabular">{slots} {tb.slots}</strong> {tb.left}
+                {tb.msg} <strong className="text-white tabular">{slotsLeft} {tb.slots}</strong> {tb.left}
               </span>
             </div>
 
