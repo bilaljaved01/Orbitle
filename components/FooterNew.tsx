@@ -3,34 +3,27 @@
 import React from "react";
 import Link from "next/link";
 
-// ── FooterNew.tsx (Operators page footer) ──
-// Added "Orbitle for Agents" link in Company column and a banner CTA section
-
 export default function FooterNew() {
   return (
     <footer
       style={{
         background: "#0d1b2e",
-        padding: "56px 40px 32px",
         fontFamily: "'Plus Jakarta Sans', sans-serif",
       }}
+      className="px-4 sm:px-6 lg:px-10 pt-12 sm:pt-14 pb-8"
     >
       <div style={{ maxWidth: 1080, margin: "0 auto" }}>
 
-        {/* ── Agent cross-promo banner ── */}
+        {/* Agent cross-promo banner */}
         <div
           style={{
             background: "rgba(37,99,235,0.12)",
             border: "1px solid rgba(37,99,235,0.25)",
             borderRadius: 16,
-            padding: "24px 32px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 24,
-            marginBottom: 48,
-            flexWrap: "wrap",
+            padding: "20px 24px",
+            marginBottom: 40,
           }}
+          className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
         >
           <div>
             <div
@@ -47,7 +40,7 @@ export default function FooterNew() {
             </div>
             <p
               style={{
-                fontSize: 16,
+                fontSize: 15,
                 fontWeight: 700,
                 color: "#fff",
                 margin: 0,
@@ -62,13 +55,14 @@ export default function FooterNew() {
             style={{
               background: "#2563eb",
               color: "#fff",
-              fontSize: 14,
+              fontSize: 13,
               fontWeight: 700,
-              padding: "12px 24px",
+              padding: "11px 22px",
               borderRadius: 50,
               textDecoration: "none",
               whiteSpace: "nowrap",
               flexShrink: 0,
+              display: "inline-block",
             }}
           >
             Explore Orbitle for Agents →
@@ -78,19 +72,17 @@ export default function FooterNew() {
         {/* Main footer grid */}
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "2fr 1fr 1fr 1fr",
-            gap: 56,
-            paddingBottom: 44,
+            paddingBottom: 36,
             borderBottom: "1px solid rgba(255,255,255,0.07)",
-            marginBottom: 32,
+            marginBottom: 28,
           }}
+          className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12"
         >
-          {/* Brand */}
-          <div>
+          {/* Brand — full width on mobile */}
+          <div className="col-span-2 lg:col-span-1">
             <div
               style={{
-                fontSize: 22,
+                fontSize: 20,
                 fontWeight: 800,
                 fontStyle: "italic",
                 color: "#fff",
@@ -102,22 +94,17 @@ export default function FooterNew() {
             </div>
             <p
               style={{
-                fontSize: 13.5,
+                fontSize: 13,
                 color: "rgba(255,255,255,0.4)",
                 lineHeight: 1.7,
-                marginBottom: 18,
+                marginBottom: 16,
+                maxWidth: 280,
               }}
             >
               The white-label travel business SaaS platform by TrigrowTech. Built for operators,
               agents, and the teams running them.
             </p>
-            <div
-              style={{
-                fontSize: 13,
-                color: "rgba(255,255,255,0.35)",
-                lineHeight: 2,
-              }}
-            >
+            <div style={{ fontSize: 13, color: "rgba(255,255,255,0.35)", lineHeight: 2 }}>
               hello@orbitle.com
               <br />
               +91 9118556755
@@ -128,32 +115,26 @@ export default function FooterNew() {
           <div>
             <h4
               style={{
-                fontSize: 11,
+                fontSize: 10,
                 fontWeight: 700,
                 letterSpacing: "0.1em",
                 textTransform: "uppercase",
                 color: "rgba(255,255,255,0.3)",
-                marginBottom: 16,
+                marginBottom: 14,
               }}
             >
               Platform
             </h4>
-            {[
-              "Marketplace",
-              "Agent Portal",
-              "Lead Management",
-              "Operator Dashboard",
-              "Subdomains",
-            ].map((l) => (
+            {["Marketplace", "Agent Portal", "Lead Management", "Operator Dashboard", "Subdomains"].map((l) => (
               <a
                 key={l}
                 href="#"
                 style={{
                   display: "block",
-                  fontSize: 13.5,
+                  fontSize: 13,
                   color: "rgba(255,255,255,0.45)",
                   textDecoration: "none",
-                  marginBottom: 11,
+                  marginBottom: 10,
                 }}
               >
                 {l}
@@ -165,12 +146,12 @@ export default function FooterNew() {
           <div>
             <h4
               style={{
-                fontSize: 11,
+                fontSize: 10,
                 fontWeight: 700,
                 letterSpacing: "0.1em",
                 textTransform: "uppercase",
                 color: "rgba(255,255,255,0.3)",
-                marginBottom: 16,
+                marginBottom: 14,
               }}
             >
               Company
@@ -181,26 +162,25 @@ export default function FooterNew() {
                 href="#"
                 style={{
                   display: "block",
-                  fontSize: 13.5,
+                  fontSize: 13,
                   color: "rgba(255,255,255,0.45)",
                   textDecoration: "none",
-                  marginBottom: 11,
+                  marginBottom: 10,
                 }}
               >
                 {l}
               </a>
             ))}
-            {/* ── Cross-link to Agents ── */}
             <Link
               href="/agents"
               style={{
                 display: "inline-block",
-                fontSize: 13,
+                fontSize: 12,
                 fontWeight: 700,
                 color: "#93c5fd",
                 textDecoration: "none",
-                marginTop: 6,
-                padding: "5px 14px",
+                marginTop: 4,
+                padding: "4px 12px",
                 borderRadius: 20,
                 border: "1px solid rgba(147,197,253,0.2)",
                 background: "rgba(147,197,253,0.05)",
@@ -214,31 +194,26 @@ export default function FooterNew() {
           <div>
             <h4
               style={{
-                fontSize: 11,
+                fontSize: 10,
                 fontWeight: 700,
                 letterSpacing: "0.1em",
                 textTransform: "uppercase",
                 color: "rgba(255,255,255,0.3)",
-                marginBottom: 16,
+                marginBottom: 14,
               }}
             >
               Resources
             </h4>
-            {[
-              "Book a Demo",
-              "See Pricing",
-              "Privacy Policy",
-              "Terms of Service",
-            ].map((l) => (
+            {["Book a Demo", "See Pricing", "Privacy Policy", "Terms of Service"].map((l) => (
               <a
                 key={l}
                 href="#"
                 style={{
                   display: "block",
-                  fontSize: 13.5,
+                  fontSize: 13,
                   color: "rgba(255,255,255,0.45)",
                   textDecoration: "none",
-                  marginBottom: 11,
+                  marginBottom: 10,
                 }}
               >
                 {l}
@@ -249,14 +224,8 @@ export default function FooterNew() {
 
         {/* Bottom bar */}
         <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            fontSize: 12.5,
-            flexWrap: "wrap",
-            gap: 12,
-          }}
+          style={{ fontSize: 12 }}
+          className="flex flex-col sm:flex-row justify-between items-center gap-3"
         >
           <span style={{ color: "rgba(255,255,255,0.3)" }}>
             © 2026 TrigrowTech Pvt. Ltd. All rights reserved.

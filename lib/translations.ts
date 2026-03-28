@@ -9,7 +9,7 @@ export const translations = {
     topbar: {
       badge: 'Founding Offer',
       msg: 'First 50 clients get discounted rate —',
-      slots: '47 spots',
+      slots: 'spots',
       left: 'left',
       link: 'Reserve your spot →',
     },
@@ -372,7 +372,7 @@ export const translations = {
     topbar: {
       badge: 'फाउंडिंग ऑफर',
       msg: 'पहले 50 क्लाइंट्स को डिस्काउंटेड रेट मिलेगा —',
-      slots: '47 स्पॉट',
+      slots: 'स्पॉट',
       left: 'बचे हैं',
       link: 'अपना स्पॉट बुक करें →',
     },

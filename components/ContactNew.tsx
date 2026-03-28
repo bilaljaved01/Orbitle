@@ -2,11 +2,6 @@
 
 import React, { useState } from "react";
 
-// ContactNew.tsx
-// Accepts id, heading, subheading props so the same component
-// can be dropped in 3 places on the Operators page with
-// different anchors and copy.
-
 interface ContactNewProps {
   id?: string;
   heading?: string;
@@ -23,6 +18,7 @@ const inputStyle: React.CSSProperties = {
   fontFamily: "inherit",
   outline: "none",
   width: "100%",
+  boxSizing: "border-box",
 };
 
 export default function ContactNew({
@@ -51,30 +47,24 @@ export default function ContactNew({
       id={id}
       style={{
         background: "#f0f4fa",
-        padding: "88px 40px",
         fontFamily: "'Plus Jakarta Sans', sans-serif",
       }}
+      className="px-4 sm:px-6 lg:px-10 py-16 sm:py-20 lg:py-24"
     >
       <div
-        style={{
-          maxWidth: 1080,
-          margin: "0 auto",
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: 64,
-          alignItems: "start",
-        }}
+        style={{ maxWidth: 1080, margin: "0 auto" }}
+        className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start"
       >
         {/* Left */}
         <div>
           <h2
             style={{
-              fontSize: "clamp(30px,4vw,50px)",
+              fontSize: "clamp(26px, 4vw, 46px)",
               fontWeight: 800,
               color: "#0d1b2e",
               letterSpacing: "-0.03em",
               lineHeight: 1.1,
-              marginBottom: 18,
+              marginBottom: 16,
             }}
           >
             {heading}
@@ -84,7 +74,7 @@ export default function ContactNew({
               fontSize: 16,
               color: "#4b5e7a",
               lineHeight: 1.75,
-              marginBottom: 36,
+              marginBottom: 32,
             }}
           >
             {subheading}
@@ -160,7 +150,7 @@ export default function ContactNew({
               background: "#fff",
               border: "1px solid #e2e8f0",
               borderRadius: 28,
-              padding: "40px 36px",
+              padding: "40px 32px",
               textAlign: "center",
               boxShadow: "0 4px 40px rgba(37,99,235,0.07)",
             }}
@@ -176,13 +166,7 @@ export default function ContactNew({
             >
               Demo request received!
             </h3>
-            <p
-              style={{
-                fontSize: 14,
-                color: "#4b5e7a",
-                lineHeight: 1.7,
-              }}
-            >
+            <p style={{ fontSize: 14, color: "#4b5e7a", lineHeight: 1.7 }}>
               We'll reach out within 24 hours with calendar options and a
               platform overview.
             </p>
@@ -193,13 +177,13 @@ export default function ContactNew({
               background: "#fff",
               border: "1px solid #e2e8f0",
               borderRadius: 28,
-              padding: "36px",
+              padding: "32px 28px",
               boxShadow: "0 4px 40px rgba(37,99,235,0.07)",
             }}
           >
             <h3
               style={{
-                fontSize: 22,
+                fontSize: 20,
                 fontWeight: 800,
                 color: "#0d1b2e",
                 letterSpacing: "-0.02em",
@@ -212,7 +196,7 @@ export default function ContactNew({
               style={{
                 fontSize: 13.5,
                 color: "#7a8fa8",
-                marginBottom: 22,
+                marginBottom: 20,
                 lineHeight: 1.6,
               }}
             >
@@ -223,19 +207,10 @@ export default function ContactNew({
               onSubmit={handleSubmit}
               style={{ display: "flex", flexDirection: "column", gap: 12 }}
             >
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: 12,
-                }}
-              >
-                <label
-                  style={{ display: "flex", flexDirection: "column", gap: 5 }}
-                >
-                  <span
-                    style={{ fontSize: 12, fontWeight: 700, color: "#0d1b2e" }}
-                  >
+              {/* Name + Phone — stack on small, 2-col on sm+ */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <label style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: "#0d1b2e" }}>
                     Your Name
                   </span>
                   <input
@@ -245,12 +220,8 @@ export default function ContactNew({
                     style={inputStyle}
                   />
                 </label>
-                <label
-                  style={{ display: "flex", flexDirection: "column", gap: 5 }}
-                >
-                  <span
-                    style={{ fontSize: 12, fontWeight: 700, color: "#0d1b2e" }}
-                  >
+                <label style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: "#0d1b2e" }}>
                     Phone
                   </span>
                   <input
@@ -262,19 +233,11 @@ export default function ContactNew({
                   />
                 </label>
               </div>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: 12,
-                }}
-              >
-                <label
-                  style={{ display: "flex", flexDirection: "column", gap: 5 }}
-                >
-                  <span
-                    style={{ fontSize: 12, fontWeight: 700, color: "#0d1b2e" }}
-                  >
+
+              {/* Email + Business — same */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <label style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: "#0d1b2e" }}>
                     Email
                   </span>
                   <input
@@ -285,12 +248,8 @@ export default function ContactNew({
                     style={inputStyle}
                   />
                 </label>
-                <label
-                  style={{ display: "flex", flexDirection: "column", gap: 5 }}
-                >
-                  <span
-                    style={{ fontSize: 12, fontWeight: 700, color: "#0d1b2e" }}
-                  >
+                <label style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: "#0d1b2e" }}>
                     Business Name
                   </span>
                   <input
@@ -301,12 +260,9 @@ export default function ContactNew({
                   />
                 </label>
               </div>
-              <label
-                style={{ display: "flex", flexDirection: "column", gap: 5 }}
-              >
-                <span
-                  style={{ fontSize: 12, fontWeight: 700, color: "#0d1b2e" }}
-                >
+
+              <label style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: "#0d1b2e" }}>
                   How many agents on your team?
                 </span>
                 <select name="team_size" style={inputStyle}>
@@ -317,12 +273,9 @@ export default function ContactNew({
                   <option>50+ agents</option>
                 </select>
               </label>
-              <label
-                style={{ display: "flex", flexDirection: "column", gap: 5 }}
-              >
-                <span
-                  style={{ fontSize: 12, fontWeight: 700, color: "#0d1b2e" }}
-                >
+
+              <label style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: "#0d1b2e" }}>
                   Anything to add?
                 </span>
                 <textarea
