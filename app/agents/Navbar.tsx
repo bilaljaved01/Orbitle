@@ -285,95 +285,120 @@ function AnnouncementBar({
       style={{
         background: "#0d1b2e",
         color: "#fff",
-        padding: "10px 24px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        fontSize: 13,
-        gap: 16,
+        position: "relative",
+        overflow: "hidden",
       }}
     >
-      {/* spacer keeps content centred */}
-      <div style={{ width: 60 }} />
-
+      {/* Content row — wraps on mobile */}
       <div
         style={{
+          maxWidth: 1280,
+          margin: "0 auto",
+          padding: "10px 48px 10px 16px", // right padding leaves room for × button
           display: "flex",
           alignItems: "center",
-          gap: 12,
-          flex: 1,
           justifyContent: "center",
+          gap: 10,
           flexWrap: "wrap",
+          fontSize: 12,
+          fontWeight: 600,
         }}
       >
+        {/* Badge */}
         <span
           style={{
             background: "#2563eb",
             color: "#fff",
-            fontSize: 11,
+            fontSize: 10,
             fontWeight: 700,
             letterSpacing: "0.08em",
             textTransform: "uppercase",
-            padding: "4px 10px",
-            borderRadius: 6,
+            padding: "3px 8px",
+            borderRadius: 4,
             whiteSpace: "nowrap",
+            flexShrink: 0,
           }}
         >
           Early Access
         </span>
 
-        <span style={{ color: "rgba(255,255,255,0.85)" }}>
+        {/* Message */}
+        <span style={{ color: "rgba(255,255,255,0.85)", textAlign: "center" }}>
           First 100 agents get lifetime pricing —{" "}
           <strong style={{ color: "#fff" }}>78 spots left</strong>
         </span>
 
+        {/* Timer - hidden on very small screens via CSS class */}
         <div
           className="ann-bar-timer"
           style={{
             display: "flex",
             alignItems: "center",
-            gap: 6,
+            gap: 5,
             background: "rgba(255,255,255,0.1)",
             border: "1px solid rgba(255,255,255,0.15)",
-            padding: "5px 12px",
-            borderRadius: 8,
+            padding: "3px 10px",
+            borderRadius: 6,
             fontWeight: 600,
-            fontSize: 13,
+            fontSize: 12,
             fontFamily: "monospace",
             color: "#fff",
             whiteSpace: "nowrap",
+            flexShrink: 0,
           }}
         >
           🕐 {countdown}
         </div>
 
+        {/* CTA link */}
         <a
           href="#get-started"
-          style={{ color: "#fff", fontWeight: 700, fontSize: 13, textDecoration: "none", whiteSpace: "nowrap" }}
+          style={{
+            color: "#93c5fd",
+            fontWeight: 700,
+            fontSize: 12,
+            textDecoration: "none",
+            whiteSpace: "nowrap",
+            flexShrink: 0,
+          }}
         >
           Reserve your spot →
         </a>
       </div>
 
+      {/* Dismiss — absolute so it doesn't affect flex layout */}
       <button
         onClick={onDismiss}
         aria-label="Dismiss announcement"
         style={{
+          position: "absolute",
+          right: 10,
+          top: "50%",
+          transform: "translateY(-50%)",
           background: "none",
           border: "none",
-          color: "rgba(255,255,255,0.4)",
+          color: "rgba(255,255,255,0.45)",
           cursor: "pointer",
           fontSize: 18,
           lineHeight: 1,
-          padding: "0 4px",
+          padding: "4px 6px",
           flexShrink: 0,
         }}
       >
         ×
       </button>
+
+      {/* Animated shimmer line at bottom */}
+      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 1, background: "rgba(37,99,235,0.3)", overflow: "hidden" }}>
+        <div
+          className="ann-shimmer"
+          style={{ height: "100%", width: "33%", background: "linear-gradient(90deg, transparent, #2563eb, transparent)" }}
+        />
+      </div>
     </div>
   );
 }
+
 
 // ─────────────────────────────────────────────
 // MAIN EXPORT

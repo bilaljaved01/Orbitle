@@ -81,7 +81,6 @@ const GLOBAL_STYLES = `
     .footer-brand    { grid-column: 1 / -1 !important; }
 
     /* Announcement bar */
-    .ann-bar       { font-size: 11px !important; padding: 8px 16px !important; }
     .ann-bar-timer { display: none !important; }
 
     /* Form */
@@ -92,6 +91,10 @@ const GLOBAL_STYLES = `
     .pricing-grid { grid-template-columns: 1fr !important; }
     .footer-grid  { grid-template-columns: 1fr !important; }
   }
+
+  /* Shimmer animation for announcement bar */
+  @keyframes ann-slide { from { transform: translateX(-100%); } to { transform: translateX(400%); } }
+  .ann-shimmer { animation: ann-slide 3s linear infinite; }
 `;
 
 // ─────────────────────────────────────────────
