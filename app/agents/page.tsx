@@ -688,6 +688,20 @@ export default function AgentsPage() {
   const [pricingUnlocked, setPricingUnlocked] = useState(false);
   const unlockPricing = () => setPricingUnlocked(true);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Orbitle for Agents",
+    "operatingSystem": "Web-based",
+    "applicationCategory": "TravelAgencySoftware",
+    "description": "White-label travel business platform for independent travel agents. Branded marketplace and admin panel on your own domain in 48 hours.",
+    "offers": {
+      "@type": "Offer",
+      "price": "499",
+      "priceCurrency": "INR"
+    }
+  };
+
   return (
     <div
       style={{
@@ -698,6 +712,10 @@ export default function AgentsPage() {
         WebkitFontSmoothing: "antialiased",
       }}
     >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <style>{GLOBAL_STYLES}</style>
 
       <NavBar />
